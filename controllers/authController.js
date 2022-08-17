@@ -77,7 +77,8 @@ function login(req, res, next) {
 					username: user.username,
 					_id: user._id,
 					email: user.email,
-					isAdmin: user.isAdmin
+					isAdmin: user.isAdmin,
+					cart: user.cart
 				});
 		})
 		.catch(next);
@@ -101,19 +102,31 @@ function checkAuth(req, res, next) {
 		return res.status(202).send();
 	}
 	userModel.findById(userId).populate(['cart', 'favorites']).then(user => {
-		return res.send({ username: user.username, _id: user._id, admin: user.admin });
+		console.log('CHECK OUT:', user)
+		// return res.send({ username: user.username, _id: user._id, admin: user.isAdmin, cart: user.cart });
+		return res.json(user);
 	}).catch(error => {
-		return res.status(204).send();
+		return res.status(204).send({ message: error });
 	})
 }
 
 function getProfileInfo(req, res, next) {
-	const { _id: userId } = req.user;
-
-	userModel.findOne({ _id: userId }, { password: 0, __v: 0 }) //finding by Id and returning without password and __v
-		.populate(['posts', 'favorites'])
+	console.log('getProfilereq: ', req.user)
+	const { _id } = req.user;
+	userModel.findOne({ _id }, { password: 0, __v: 0 }) //finding by Id and returning without password and __v
+		// .populate(['cart', 'favorites', 'orders', 'orders.products.productId'])
+		.populate('cart favorites orders orders.products.productId')
 		.then(user => {
-			res.status(200).json(user);
+			console.log('getProfileInfo: ', user);
+			// res.status(200).json(user);
+			res.status(200).json({
+				username: user.username,
+				_id: user._id,
+				isAdmin: user.isAdmin,
+				email: user.email,
+				cart: user.cart,
+				orders: user.orders
+			});
 		})
 		.catch(next);
 }

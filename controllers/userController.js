@@ -1,4 +1,3 @@
-const cartModel = require('../models/cartModel');
 const userModel = require('../models/userModel');
 
 function addToFavorites(req, res, next) {
@@ -44,21 +43,14 @@ function getFavorites(req, res, next) {
 // }
 
 function addToCart(req, res, next) {
-  // const { productId } = req.body;
   const { productId, amount } = req.body;
-  console.log('req.body: ', req.body)
   const { _id } = req.user;
   let newAmount;
-  // let existing;
   userModel.findById(_id).then(user => {
-    console.log('ADD_TO_CART: ', user);
     let existing = user.cart.find(i => i.productId?.toString() === productId);
-    console.log('line 54:', existing)
-    console.log('USER CART: ', user.cart)
     return existing;
     // res.status(200).json(product)
   }).then((existing) => {
-    // console.log('line 55: ', res)
     if (!existing) {
       userModel.findByIdAndUpdate(_id, { $push: { cart: { productId, amount } } })
         .then(() => {
@@ -67,7 +59,6 @@ function addToCart(req, res, next) {
         .catch(next);
     } else {
       newAmount = existing.amount + amount;
-      console.log('NEW AMOUNT: ', newAmount)
       userModel.findByIdAndUpdate(_id, { $set: { cart: { ...req.user.cart, productId, amount: newAmount } } })
         .then(() => {
           res.status(200).json({ message: 'Product successfully added to cart.' })
@@ -107,6 +98,7 @@ function getCart(req, res, next) {
   const { _id } = req.user;
   userModel.findById(_id).populate('cart cart.productId')
     .then(user => {
+      // console.log('GET_CART: ', user)
       // user.cart.reduce((acc, curr) => acc + +curr.price, 0);
       res.status(200).json(user.cart);
     })
@@ -126,8 +118,8 @@ function getCart(req, res, next) {
 function removeFromCart(req, res, next) {
   const { productId } = req.body;
   const { _id } = req.user;
-  // userModel.findByIdAndUpdate(_id, { $pull: { "cart.$.productId": productId } }, { new: true })
-  userModel.findByIdAndUpdate(_id, { $pull: { cart: { "productId._id": productId } } }, { new: true })
+  // userModel.findByIdAndUpdate(_id, { $pull: { "cart.$.productId._id": productId } }, { new: true })
+  userModel.findByIdAndUpdate(_id, { $pull: { cart: { _id: productId } } }, { new: true })
     .then(() => {
       res.status(200).json({ message: 'Product successfully removed from cart.' })
     })

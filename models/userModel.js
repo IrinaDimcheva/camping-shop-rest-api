@@ -16,24 +16,24 @@ const userSchema = new mongoose.Schema({
 		unique: true,
 		minlength: [3, 'Username should be at least 3 characters'],
 		maxlength: [25, 'Username shouldn\'t exceed 25 characters'],
-		validate: {
-			validator: function (v) {
-				return /[a-zA-Z0-9]+/g.test(v);
-			},
-			message: props => `${props.value} must contains only latin letters and digits!`
-		},
+		// validate: {
+		// 	validator: function (v) {
+		// 		return /[a-zA-Z0-9]+/g.test(v);
+		// 	},
+		// 	message: props => `${props.value} must contains only latin letters and digits!`
+		// },
 	},
 	password: {
 		type: String,
 		required: true,
 		minlength: [6, 'Password should be at least 6 characters'],
 		maxlength: [35, 'Password shouldn\'t exceed 35 characters'],
-		validate: {
-			validator: function (v) {
-				return /[a-zA-Z0-9]+/g.test(v);
-			},
-			message: props => `${props.value} must contains only latin letters and digits!`
-		},
+		// validate: {
+		// 	validator: function (v) {
+		// 		return /[a-zA-Z0-9]+/g.test(v);
+		// 	},
+		// 	message: props => `${props.value} must contains only latin letters and digits!`
+		// },
 	},
 	isAdmin: {
 		type: Boolean,
@@ -73,17 +73,13 @@ const userSchema = new mongoose.Schema({
 			default: 1
 		}
 	}],
-	// cart: [{
-	// 	type: ObjectId,
-	// 	ref: 'Product'
-	// }],
 	favorites: [{
 		type: ObjectId,
 		ref: 'Product'
 	}],
 	orders: [{
 		type: ObjectId,
-		ref: 'Product'
+		ref: 'Order'
 	}]
 	// products: [{
 	// 	type: ObjectId,
@@ -93,8 +89,7 @@ const userSchema = new mongoose.Schema({
 	// 	type: ObjectId,
 	// 	ref: 'Comment'
 	// }]
-},
-	{ timestamps: { createdAt: 'created_at' } });
+}, { timestamps: { createdAt: 'created_at' } });
 
 userSchema.methods = {
 	matchPassword: function (password) {
