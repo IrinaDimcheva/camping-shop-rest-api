@@ -102,7 +102,7 @@ function checkAuth(req, res, next) {
 		return res.status(202).send();
 	}
 	userModel.findById(userId).populate(['cart', 'favorites']).then(user => {
-		console.log('CHECK OUT:', user)
+		// console.log('CHECK OUT:', user)
 		// return res.send({ username: user.username, _id: user._id, admin: user.isAdmin, cart: user.cart });
 		return res.json(user);
 	}).catch(error => {
@@ -111,13 +111,16 @@ function checkAuth(req, res, next) {
 }
 
 function getProfileInfo(req, res, next) {
-	console.log('getProfilereq: ', req.user)
+	// console.log('getProfilereq: ', req.user)
 	const { _id } = req.user;
 	userModel.findOne({ _id }, { password: 0, __v: 0 }) //finding by Id and returning without password and __v
 		// .populate(['cart', 'favorites', 'orders', 'orders.products.productId'])
-		.populate('cart favorites orders orders.products.productId')
+		.populate('cart favorites orders')
+		.populate('orders.products.$*.productId')
+		.sort('-orders')
+		// .sort({ 'orders.created_at': -1 })
 		.then(user => {
-			console.log('getProfileInfo: ', user);
+			// console.log('getProfileInfo: ', user);
 			// res.status(200).json(user);
 			res.status(200).json({
 				username: user.username,
@@ -125,6 +128,7 @@ function getProfileInfo(req, res, next) {
 				isAdmin: user.isAdmin,
 				email: user.email,
 				cart: user.cart,
+				favorites: user.favorites,
 				orders: user.orders
 			});
 		})

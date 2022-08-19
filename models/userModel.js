@@ -77,14 +77,18 @@ const userSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: 'Product'
 	}],
+	// orders: [{
+	// 	type: ObjectId,
+	// 	ref: 'Order'
+	// }],
 	orders: [{
 		type: ObjectId,
 		ref: 'Order'
-	}]
-	// products: [{
-	// 	type: ObjectId,
-	// 	ref: 'Product'
-	// }],
+	}],
+	productId: {
+		type: ObjectId,
+		ref: 'Product'
+	},
 	// comments: [{
 	// 	type: ObjectId,
 	// 	ref: 'Comment'

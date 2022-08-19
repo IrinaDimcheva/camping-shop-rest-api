@@ -1,8 +1,10 @@
 const userModel = require('../models/userModel');
 
 function addToFavorites(req, res, next) {
-  const { productId } = req.params;
+  const { productId } = req.body;
+  // console.log('addToFavorites', req.body);
   const { _id } = req.user;
+  // userModel.findByIdAndUpdate(_id, { $push: { favorites: productId } })
   userModel.findByIdAndUpdate(_id, { $addToSet: { favorites: productId } }, { new: true })
     .then(updatedUser => {
       res.status(200).json(updatedUser)
@@ -11,10 +13,10 @@ function addToFavorites(req, res, next) {
 }
 
 function removeFromFavorites(req, res, next) {
-  const { productId } = req.params;
-  console.log('req.params', req.params)
+  const { productId } = req.body;
+  // console.log('req.body', req.body)
   const { _id } = req.user;
-  console.log(productId, 'req.user ->', req.user);
+  console.log(productId, 'req.user ->', req.user, 'req.body', req.body);
   userModel.findByIdAndUpdate(_id, { $pull: { favorites: productId } })
     .then(() => {
       res.status(200).json({ message: 'Product successfully removed from favorites.' });
@@ -26,11 +28,18 @@ function getFavorites(req, res, next) {
   const { _id } = req.user;
   userModel.findById({ _id }).populate('favorites').populate('userId')
     .then(user => {
-      console.log(user)
+      // console.log(user)
       res.status(200).json(user.favorites);
     })
     .catch(next);
 }
+
+// function getFavoritesByProductId(req, res, next) {
+//   const { productId } = req.body;
+//   const { _id } = req.user;
+
+//   userModel.findById(_id).populate('favorites')
+// }
 
 // function getCart(req, res, next) {
 //   const { _id } = req.user;

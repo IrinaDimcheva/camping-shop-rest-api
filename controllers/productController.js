@@ -71,7 +71,7 @@ function getProduct(req, res, next) {
 		.populate('userId')
 		// .populate('comments')
 		.then(product => {
-			console.log(product)
+			// console.log(product)
 			res.json(product)
 		})
 		.catch(next);
@@ -95,12 +95,12 @@ function createProduct(req, res, next) {
 	const { _id } = req.user;
 	if (!req.user.isAdmin) { return; }
 	const { name, description, info, imageUrl, price, quantity, category } = req.body.data;
-	console.log('REQ.BODY: ', req.body)
+	// console.log('REQ.BODY: ', req.body)
 	productModel.create({ name, description, info, imageUrl, price, quantity, category, userId: _id })
 		.then(product => {
 			return userModel.updateOne({ _id }, { $push: { products: product._id } });
 		}).then(product => {
-			console.log(product);
+			// console.log(product);
 			res.status(200).json(product);
 		})
 		.catch(next);

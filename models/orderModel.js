@@ -32,23 +32,30 @@ const orderSchema = new Schema({
     }
   },
   products: [{
-    productId: {
-      type: ObjectId,
-      ref: 'Product'
-    },
-    amount: {
-      type: Number,
-      default: 1
-    }
+    type: Map,
+    of: new Schema({
+      productId: {
+        type: ObjectId,
+        ref: 'Product'
+      },
+      amount: {
+        type: Number,
+        default: 1
+      }
+    })
   }],
   totalPrice: {
     type: Number,
     required: true
   },
-  userId: {
-    type: ObjectId,
-    ref: "User"
-  }
+  status: {
+    type: String,
+    default: "PENDING"
+  },
+  // userId: {
+  //   type: ObjectId,
+  //   ref: "User"
+  // }
 }, { timestamps: { createdAt: 'created_at' } });
 
 const Order = mongoose.model('Order', orderSchema);

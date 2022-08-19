@@ -11,7 +11,7 @@ function admin() {
       }
       return next({ message: 'Not authorized for this operation.' });
     }).catch(err => {
-      console.log(err);
+      // console.log(err);
       res.status(401).send({ message: 'Not authorized for this operation.' });
       next(err);
     });
