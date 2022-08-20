@@ -7,7 +7,7 @@ function createOrder(req, res, next) {
   // console.log('REQ.BODY-in-orders: ', req.body);
   // console.log('ORDER: ', products);
   // console.log('Creator: ', creator);
-  // console.log('REQ.USER-in-orders: ', req.user);
+  console.log('REQ.USER-in-orders: ', req.user);
   const totalPrice = products.reduce((acc, curr) => {
     return acc += Number(curr.price) * Number(curr.amount);
   }, 0);
@@ -15,11 +15,11 @@ function createOrder(req, res, next) {
   orderModel.create({ creator, products, totalPrice })
     .then(order => {
       return userModel.findByIdAndUpdate({ _id: _id },
-        { $push: { orders: order._id } },
-        { $pull: { "cart": products } });
-      // { $set: { "cart.$[].products": [] } });
-    }).then(order => {
-      // console.log(order);
+        {
+          $push: { orders: order._id },
+          $set: { cart: [] }
+        }, { multi: true });
+    }).then(() => {
       res.status(200).json({ message: 'Order was created' });
     })
     .catch(next);
