@@ -8,6 +8,5 @@ router.use('/auth', auth);
 router.use('/user', user);
 router.use('/products', products);
 router.use('/orders', orders);
-router.use('/favorites', favorites);
 
 module.exports = router;
