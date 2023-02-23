@@ -52,10 +52,6 @@ const orderSchema = new Schema({
     type: String,
     default: "PENDING"
   },
-  // userId: {
-  //   type: ObjectId,
-  //   ref: "User"
-  // }
 }, { timestamps: { createdAt: 'created_at' } });
 
 const Order = mongoose.model('Order', orderSchema);

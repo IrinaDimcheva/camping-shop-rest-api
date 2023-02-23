@@ -15,7 +15,6 @@ router.put('/:productId', auth(), admin(), productController.updateProduct);
 router.post('/:productId/comments', auth(), commentController.createComment);
 router.get('/:productId/comments', commentController.getComments);
 router.get('/:productId/comments/:commentId', auth(), commentController.getComment);
-// router.get('/:productId', auth(), commentController.getLatestsComments);
 router.put('/:productId/comments/:commentId', auth(), commentController.editComment);
 router.delete('/:productId/comments/:commentId', auth(), commentController.deleteComment);
 

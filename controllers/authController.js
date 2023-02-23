@@ -10,29 +10,21 @@ const removePassword = (data) => {
 
 function register(req, res, next) {
 	const { username, email, password } = req.body;
-	// const { email, password, address } = req.body;
-	// const data = { email, password };
 
 	return userModel.create({ username, email, password })
-		// return userModel.create({ ...data, address })
 		.then((createdUser) => {
 			createdUser = bsonToJson(createdUser);
 			createdUser = removePassword(createdUser);
 
 			const token = utils.jwt.createToken({ id: createdUser._id });
 			if (process.env.NODE_ENV === 'production') {
-				res.cookie(authCookieName, token, { httpOnly: true, sameSite: 'none', secure: true })
+				// res.cookie(authCookieName, token, { httpOnly: true, sameSite: 'none', secure: true })
+				res.cookie(authCookieName, token, { httpOnly: true, sameSite: 'strict', secure: true })
 			} else {
 				res.cookie(authCookieName, token, { httpOnly: true })
 			}
 			res.status(201)
 				.send(createdUser);
-			// .send({
-			// 	username: createdUser.username,
-			// 	_id: createdUser._id,
-			// 	email: createdUser.email,
-			// 	admin: createdUser.isAdmin
-			// });
 		})
 		.catch(err => {
 			if (err.name === 'MongoError' && err.code === 11000) {
@@ -62,24 +54,17 @@ function login(req, res, next) {
 				return;
 			}
 			user = bsonToJson(user);
-			// user = removePassword(user);
 
 			const token = utils.jwt.createToken({ id: user._id, isAdmin: user.admin });
 
 			if (process.env.NODE_ENV === 'production') {
-				res.cookie(authCookieName, token, { httpOnly: true, sameSite: 'none', secure: true })
+				// res.cookie(authCookieName, token, { httpOnly: true, sameSite: 'none', secure: true })
+				res.cookie(authCookieName, token, { httpOnly: true, sameSite: 'strict', secure: true })
 			} else {
 				res.cookie(authCookieName, token, { httpOnly: true })
 			}
 			res.status(200)
 				.send(user);
-			// .send({
-			// 	username: user.username,
-			// 	_id: user._id,
-			// 	email: user.email,
-			// 	isAdmin: user.isAdmin,
-			// 	cart: user.cart
-			// });
 		})
 		.catch(next);
 }
@@ -111,10 +96,9 @@ function checkAuth(req, res, next) {
 
 function getProfileInfo(req, res, next) {
 	const { _id } = req.user;
-	userModel.findOne({ _id }, { password: 0, __v: 0 }) //finding by Id and returning without password and __v
+	userModel.findOne({ _id }, { password: 0, __v: 0 })
 		.populate('cart favorites orders')
 		.then(user => {
-			// res.status(200).json(user);
 			res.status(200).json({
 				username: user.username,
 				_id: user._id,

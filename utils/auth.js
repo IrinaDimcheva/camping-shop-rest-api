@@ -18,12 +18,9 @@ function auth(redirectUnauthenticated = true) {
 				}
 				userModel.findById(data.id)
 					.then(user => {
-						// console.log('User DATA: ' + user);
 						req.user = user;
 						req.isLogged = true;
 						req.isAdmin = user.isAdmin;
-						// console.log(req.isAdmin, req.user, req.isLogged)
-						// res.locals.isLogged = true;
 						next();
 					})
 			})

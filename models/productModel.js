@@ -12,11 +12,6 @@ const productSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	// summary: {
-	// 	type: String,
-	// 	required: true,
-	// 	maxlength: [250, 'Summary shouldn\'t exceed 250 characters']
-	// },
 	description: {
 		type: String,
 		required: true,
@@ -45,10 +40,6 @@ const productSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: "User"
 	}],
-	// likes: [{
-	// 	type: ObjectId,
-	// 	ref: "User"
-	// }],
 	userId: {
 		type: ObjectId,
 		ref: "User"

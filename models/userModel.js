@@ -16,53 +16,17 @@ const userSchema = new mongoose.Schema({
 		unique: true,
 		minlength: [3, 'Username should be at least 3 characters'],
 		maxlength: [25, 'Username shouldn\'t exceed 25 characters'],
-		// validate: {
-		// 	validator: function (v) {
-		// 		return /[a-zA-Z0-9]+/g.test(v);
-		// 	},
-		// 	message: props => `${props.value} must contains only latin letters and digits!`
-		// },
 	},
 	password: {
 		type: String,
 		required: true,
 		minlength: [6, 'Password should be at least 6 characters'],
 		maxlength: [35, 'Password shouldn\'t exceed 35 characters'],
-		// validate: {
-		// 	validator: function (v) {
-		// 		return /[a-zA-Z0-9]+/g.test(v);
-		// 	},
-		// 	message: props => `${props.value} must contains only latin letters and digits!`
-		// },
 	},
 	isAdmin: {
 		type: Boolean,
 		default: false
 	},
-	// address: {
-	// 	fullName: {
-	// 		type: String,
-	// 		required: true
-	// 	},
-	// 	street: {
-	// 		type: String,
-	// 		required: true
-	// 	},
-	// 	postal: {
-	// 		type: String,
-	// 		minlength: 4,
-	// 		maxlength: 4,
-	// 		required: true
-	// 	},
-	// 	city: {
-	// 		type: String,
-	// 		required: true
-	// 	},
-	// },
-	// cart: [{
-	// 	type: ObjectId,
-	// 	ref: 'Cart'
-	// }],
 	cart: [{
 		productId: {
 			type: ObjectId,
@@ -77,10 +41,6 @@ const userSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: 'Product'
 	}],
-	// orders: [{
-	// 	type: ObjectId,
-	// 	ref: 'Order'
-	// }],
 	orders: [{
 		type: ObjectId,
 		ref: 'Order'
@@ -89,10 +49,6 @@ const userSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: 'Product'
 	},
-	// comments: [{
-	// 	type: ObjectId,
-	// 	ref: 'Comment'
-	// }]
 }, { timestamps: { createdAt: 'created_at' } });
 
 userSchema.methods = {

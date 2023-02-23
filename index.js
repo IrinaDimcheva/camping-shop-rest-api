@@ -24,20 +24,3 @@ dbConnector()
     app.listen(config.port, console.log(`Listening on port ${config.port}!`));
   })
   .catch(console.error);
-
-// module.exports = () => (req, res, next) => {
-
-//   const allowedHost = {
-//     'http://localhost:3000': true
-//   }
-
-//   if (allowedHost[req.headers.origin]) {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, HEAD');
-//     res.setHeader('Access-Control-Allow-Headers', 'X-Authorization, X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
-//     res.setHeader('Access-Control-Allow-Credentials', true);
-//     next()
-//   } else {
-//     res.send(403, { auth: false })
-//   }
-// };

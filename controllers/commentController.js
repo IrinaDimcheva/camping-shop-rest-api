@@ -30,8 +30,6 @@ function getComment(req, res, next) {
 	const { postId, commentId } = req.params;
 
 	commentModel.findById(commentId)
-		// .populate('userId')
-		// .populate('postId')
 		.then(comment => res.json(comment))
 		.catch(next);
 }
@@ -40,12 +38,9 @@ function createComment(req, res, next) {
 	const { postId } = req.params;
 	const { text } = req.body;
 	const { _id: userId } = req.user;
-	// console.log('user', req.user);
-	// console.log('text', req.body);
 
 	commentModel.create({ text, userId, postId })
 		.then(comment => {
-			// console.log('comment', comment);
 			return Promise.all([
 				userModel.updateOne({ _id: userId }, { $push: { comments: comment._id }, $addToSet: { posts: postId } }),
 				postModel.findByIdAndUpdate({ _id: postId }, { $push: { comments: comment._id } }, { new: true })
@@ -59,7 +54,6 @@ function editComment(req, res, next) {
 	const { commentId } = req.params;
 	const { commentText } = req.body;
 	const { _id: userId } = req.user;
-	// console.log(req.body);
 
 	// if the userId is not the same as this one of the comment, the comment will not be updated
 	commentModel.findByIdAndUpdate(commentId, req.body)
@@ -96,8 +90,6 @@ function deleteComment(req, res, next) {
 function like(req, res, next) {
 	const { commentId } = req.params;
 	const { _id: userId } = req.user;
-
-	// console.log('like');
 
 	commentModel.updateOne({ _id: commentId }, { $addToSet: { likes: userId } }, { new: true })
 		.then(() => res.status(200).json({ message: 'Liked successful!' }))

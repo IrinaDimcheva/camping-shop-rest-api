@@ -2,7 +2,6 @@ const router = require('express').Router();
 const user = require('./user');
 const products = require('./products');
 const likes = require('./likes');
-const favorites = require('./favorites');
 const auth = require('./auth');
 const orders = require('./orders');
 

@@ -1,3 +1,4 @@
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -7,6 +8,8 @@ const cookieSecret = process.env.COOKIESECRET || 'MyShopSecret';
 
 module.exports = (app) => {
     app.use(express.json());
+
+    app.use('/api', createProxyMiddleware({ target: 'http://api.example.com', changeOrigin: true }));
 
     app.use(cookieParser(cookieSecret));
 
