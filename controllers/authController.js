@@ -86,7 +86,7 @@ function checkAuth(req, res, next) {
 	if (!userId) {
 		return res.status(202).send();
 	}
-	userModel.findById(userId).populate(['cart', 'favorites']).then(user => {
+	userModel.findById(userId).populate(['cart', 'favorites', 'orders']).then(user => {
 		// return res.send({ username: user.username, _id: user._id, admin: user.isAdmin, cart: user.cart });
 		return res.json(user);
 	}).catch(error => {
