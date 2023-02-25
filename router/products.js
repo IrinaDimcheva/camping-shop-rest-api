@@ -3,8 +3,6 @@ const router = express.Router();
 const { auth, admin } = require('../utils');
 const { productController, commentController } = require('../controllers');
 
-// middleware that is specific to this router
-
 router.get('/', productController.getProducts);
 router.get('/category/:category', productController.getProductsByCategory);
 router.post('/new', auth(), admin(), productController.createProduct);
