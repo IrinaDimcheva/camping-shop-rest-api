@@ -1,4 +1,4 @@
-global.__basedir = __dirname;
+// global.__basedir = __dirname;
 require('dotenv').config()
 const dbConnector = require('./config/db');
 const apiRouter = require('./router');
